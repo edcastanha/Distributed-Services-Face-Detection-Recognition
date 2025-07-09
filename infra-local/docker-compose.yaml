@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
 # RabbitMQ - Secedu Broker
@@ -61,7 +59,7 @@ services:
 # Django - Secedu System Admin / API REST 
   secedu-api:
     build:
-      context: ../secedu-django-api/
+      context: ../server-django/
       dockerfile: Dockerfile
     container_name: secedu-api
     image: secedu-admin-web-api
@@ -74,7 +72,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ../secedu-django-api/:/api/
+      - ../server-django/:/api/
       - dataset_data:/api/media/dataset/
       - captura_data:/api/media/capturas/
       - faces-oval:/api/media/faces-oval/
@@ -102,7 +100,7 @@ services:
 # Celery - Secedu System Task Manager
   secedu-beat-scheduler:
     build:
-      context: ../secedu-django-api/
+      context: ../server-django/
       dockerfile: Dockerfile
     image: secedu-beat-scheduler
     command: celery -A core beat --loglevel=INFO --logfile=/api/media/logs/celery-beat.log --scheduler django_celery_beat.schedulers:DatabaseScheduler
@@ -114,7 +112,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ../secedu-django-api/:/api/
+      - ../server-django/:/api/
       - dataset_data:/api/media/dataset/
       - captura_data:/api/media/capturas/
       - faces-oval:/api/media/faces-oval/
@@ -126,7 +124,7 @@ services:
 # Celery - SecEdu System Task Worker
   secedu-tasks-workers:
     build:
-      context: ../secedu-django-api/
+      context: ../server-django/
       dockerfile: Dockerfile
     image: secedu-tasks-workers
     command: celery -A core worker --loglevel=INFO --logfile=/api/media/logs/celery-worker.log
@@ -138,7 +136,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ../secedu-django-api/:/api/
+      - ../server-django/:/api/
       - dataset_data:/api/media/dataset/
       - captura_data:/api/media/capturas/
       - faces-oval:/api/media/faces-oval/
@@ -151,18 +149,18 @@ services:
   secedu-face:
     #image: apiv1sippe:tf-deepface-1.0.0
     build:
-      context: ../secedu-flask-deepface/
+      context: ../server-flask-api/
       dockerfile: Dockerfile
     image: secedu-face-recognition
     container_name: secedu-face
     environment:
-      - FPT_PATH = /app/media/ftp/
-      - DATASET_PATH = /app/media/dataset/
-      - CAPTURAS_PATH = /app/media/capturas/
-      - LOGS_PATH = /app/media/logs/
-      - API_FACE_PATH = /root/.deepface/weights/
+      - FPT_PATH=/app/media/ftp/
+      - DATASET_PATH=/app/media/dataset/
+      - CAPTURAS_PATH=/app/media/capturas/
+      - LOGS_PATH=/app/media/logs/
+      - API_FACE_PATH=/root/.deepface/weights/
     volumes:
-      - ../secedu-flask-deepface/app/api/:/app/
+      - ../server-flask-api/app/api/:/app/
       - dataset_data:/app/media/dataset/
       - captura_data:/app/media/capturas/
       - ftp_data:/app/media/ftp/
@@ -186,17 +184,17 @@ services:
   secedu-consumer-extrator-faces:
     #image: apiv1sippe:tf-deepface-1.0.0
     build:
-      context: ../secedu-jobs-faces/
+      context: ../server-jobs-faces/
       dockerfile: Dockerfile
-    image: secedu-jobs-faces
+    image: server-jobs-faces
     container_name: secedu-consumer-extrator-faces
     command: ["python", "consumer-extrair-faces.py"]
     environment:
-      - FPT_PATH = media/ftp/
-      - DATASET_PATH = media/dataset/
-      - CAPTURAS_PATH = media/capturas/
+      - FPT_PATH=media/ftp/
+      - DATASET_PATH=media/dataset/
+      - CAPTURAS_PATH=media/capturas/
     volumes:
-      - ../secedu-jobs-faces/:/app/
+      - ../server-jobs-faces/:/app/
       - dataset_data:/app/media/dataset/
       - captura_data:/app/media/capturas/
       - ftp_data:/app/media/ftp/
@@ -217,17 +215,17 @@ services:
   secedu-consumer-embedding-faces:
     #image: apiv1sippe:tf-deepface-1.0.0
     build:
-      context: ../secedu-jobs-faces/
+      context: ../server-jobs-faces/
       dockerfile: Dockerfile
-    image: secedu-jobs-faces
+    image: server-jobs-faces
     container_name: secedu-consumer-embedding-faces
     command: ["python", "consumer-embedding-faces.py"]
     environment:
-      - FPT_PATH = media/ftp/
-      - DATASET_PATH = media/dataset/
-      - CAPTURAS_PATH = media/capturas/
+      - FPT_PATH=media/ftp/
+      - DATASET_PATH=media/dataset/
+      - CAPTURAS_PATH=media/capturas/
     volumes:
-      - ../secedu-jobs-faces/:/app/
+      - ../server-jobs-faces/:/app/
       - dataset_data:/app/media/dataset/
       - captura_data:/app/media/capturas/
       - ftp_data:/app/media/ftp/
@@ -248,17 +246,17 @@ services:
   secedu-consumer-analyze-faces:
     #image: apiv1sippe:tf-deepface-1.0.0
     build:
-      context: ../secedu-jobs-faces/
+      context: ../server-jobs-faces/
       dockerfile: Dockerfile
-    image: secedu-jobs-faces
+    image: server-jobs-faces
     container_name: secedu-consumer-analyze-faces
     command: ["python", "consumer-analyze.py"]
     environment:
-      - FPT_PATH = media/ftp/
-      - DATASET_PATH = media/dataset/
-      - CAPTURAS_PATH = media/capturas/
+      - FPT_PATH=media/ftp/
+      - DATASET_PATH=media/dataset/
+      - CAPTURAS_PATH=media/capturas/
     volumes:
-      - ../secedu-jobs-faces/:/app/
+      - ../server-jobs-faces/:/app/
       - dataset_data:/app/media/dataset/
       - captura_data:/app/media/capturas/
       - ftp_data:/app/media/ftp/
@@ -290,67 +288,67 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\postgres
+      device: volumes/postgres
 
   rabbitmq_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\rabbitmq
+      device: volumes/rabbitmq
 
   redis_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\redis
+      device: volumes/redis
 
   api_face_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\weights
+      device: volumes/weights
 
   logs_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\logs
+      device: volumes/logs
 
   ftp_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\server_ftp
+      device: volumes/server_ftp
   
   captura_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\capturas
+      device: volumes/capturas
 
   dataset_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\dataset
+      device: volumes/dataset
   
   faces-oval:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\faces-oval
+      device: volumes/faces-oval
 
   stasfiles: 
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: C:\workspace\volumes\staticfiles
+      device: volumes/staticfiles
