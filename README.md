@@ -37,7 +37,7 @@ Este PoC é apenas o começo. Vislumbro aprimoramentos como:
 
 ## Instalação
 
-Para obter instruções detalhadas sobre como configurar e executar este projeto localmente com o Docker Compose, consulte o [Guia de Instalação](./infra-local/INSTALL.md).
+Para obter instruções detalhadas sobre como configurar e executar este projeto localmente com o Docker Compose, consulte o [Guia de Instalação](./docs/INSTALL.md).
 
 Convido você a explorar o código, as instruções detalhadas e a documentação completa no repositório do projeto. Este é um testemunho da minha paixão por tecnologia e da minha capacidade de criar soluções inovadoras que geram impacto real.
 

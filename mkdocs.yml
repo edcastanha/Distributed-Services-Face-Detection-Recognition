@@ -1,8 +1,9 @@
 # mkdocs.yml
 site_name: Documentação - PoC Detecção e Reconhecimento Facial
 site_url: https://seu-dominio.com/
-repo_url: https://github.com/edson-lourenco/Distributed-Services-Face-Detection-Recognition
-repo_name: edson-lourenco/Distributed-Services-Face-Detection-Recognition
+repo_url: https://github.com/edcastanha/Distributed-Services-Face-Detection-Recognition
+repo_branch: main
+repo_name: edcastanha/Distributed-Services-Face-Detection-Recognition
 
 use_directory_urls: false
 
