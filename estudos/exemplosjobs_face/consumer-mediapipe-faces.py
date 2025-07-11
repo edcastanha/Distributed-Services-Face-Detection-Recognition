@@ -19,7 +19,7 @@ MODEL_BACKEND ='Facenet'
 LIMITE_DETECTOR = 0.995
 
 #file = 'B:/SIPPE/FTP/sippe3/Sippe3/2023-09-04/001/jpg/13/28.47[M][0@0][0].jpg'
-file = 'B:/SIPPE/FTP/img/people.jpg'
+file = '/img/people.jpg'
 
 class ConsumerExtractor:
     def __init__(self):
