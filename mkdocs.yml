@@ -1,0 +1,52 @@
+# mkdocs.yml
+site_name: Documentação - PoC Detecção e Reconhecimento Facial
+site_url: https://seu-dominio.com/
+repo_url: https://github.com/edson-lourenco/Distributed-Services-Face-Detection-Recognition
+repo_name: edson-lourenco/Distributed-Services-Face-Detection-Recognition
+
+use_directory_urls: false
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+  language: pt
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Mudar para modo escuro
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Mudar para modo claro
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            # Aponta para os diretórios com código fonte
+            - server-django
+            - server-flask-api/app
+            - server-jobs-faces
+          options:
+            docstring_style: google # Recomendo o estilo Google para as docstrings
+            show_root_heading: yes
+            show_source: yes
+
+nav:
+  - 'Início': index.md
+  - 'Arquitetura': architecture.md
+  - 'Guia de Instalação': 'INSTALL.md'
+  - 'Referência da API':
+    - 'API Django': 'reference/django_api.md'
+    - 'API Flask (Faces)': 'reference/flask_api.md'
+    - 'Celery Workers': 'reference/celery_workers.md'

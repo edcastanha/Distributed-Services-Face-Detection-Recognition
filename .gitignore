@@ -331,3 +331,5 @@ password.txt
 *static/
 **staticfiles/
 **static/   
+
+.virtual/
