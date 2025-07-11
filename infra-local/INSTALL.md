@@ -60,7 +60,7 @@ Para verificar se o ambiente está funcionando corretamente:
     ```
 
 3.  **Acesse as Interfaces Web:**
-    *   **RabbitMQ Management:** [http://localhost:15672](http://localhost:15672) (usuário: `secedu`, senha: `ep4X1!br`)
+    *   **RabbitMQ Management:** [http://localhost:15672](http://localhost:15672) (usuário: `secedu`, senha: `mudar1234`)
     *   **RedisInsight:** [http://localhost:8001](http://localhost:8001)
     *   **API Django (via Nginx):** [http://localhost:7000](http://localhost:7000)
 

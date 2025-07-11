@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       - RABBITMQ_DEFAULT_USER=secedu
-      - RABBITMQ_DEFAULT_PASS=ep4X1!br
+      - RABBITMQ_DEFAULT_PASS=mudar1234!br
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     ports:

@@ -10,7 +10,7 @@
             "acesso": "/ftp/sippe1/Sippe1/",
             "modelo": "IntelBras VIP 5220",
             "usuario": "sippe1",
-            "senha": "ep4X1!br",
+            "senha": "mudar1234",
             "status": true
         }
     },
@@ -25,7 +25,7 @@
             "acesso": "ftp/sippe2/Sippe2/",
             "modelo": "IntelBras VIP 5220",
             "usuario": "sippe2",
-            "senha": "ep4X1!br",
+            "senha": "mudar1234!br",
             "status": true
         }
     },
@@ -40,7 +40,7 @@
             "acesso": "ftp/sippe3/Sippe3/",
             "modelo": "IntelBras 4k",
             "usuario": "sippe3",
-            "senha": "ep4X1!br",
+            "senha": "mudar1234!br",
             "status": true
         }
     }
