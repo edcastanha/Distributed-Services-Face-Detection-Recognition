@@ -34,7 +34,7 @@ class ConsumerExtractor:
             pika.ConnectionParameters(
                 host=RMQ_SERVER,
                 port=5672,
-                credentials=pika.PlainCredentials('secedu', 'ep4X1!br')
+                credentials=pika.PlainCredentials('secedu', 'mudar123412341234!br')
             )
         )
         self.channel = self.connection.channel()

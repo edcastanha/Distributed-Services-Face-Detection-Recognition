@@ -325,3 +325,11 @@ volumes/*
 
 pass.txt
 password.txt
+
+# Ignore pasta static files
+*staticfiles/
+*static/
+**staticfiles/
+**static/   
+
+.virtual/
