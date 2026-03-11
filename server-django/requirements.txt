@@ -50,7 +50,7 @@ sqlparse==0.5.4
 tomlkit==0.12.1
 typing_extensions==4.8.0
 tzdata==2023.3
-urllib3==2.2.2
+urllib3==2.6.3
 vine==5.0.0
 virtualenv==20.24.5
 wcwidth==0.2.6
