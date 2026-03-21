@@ -155,7 +155,7 @@ class Escalas(baseModel):
     horario_inicio = models.TimeField()
     contrato = models.ForeignKey(Contratos, on_delete=models.CASCADE)
     itinerario = models.CharField(max_length=10, choices=CHOICE_TURNOS, default='Morning')
-    periodo = models.CharField(max_length=10, choices=CHOICE_PERIODOS, default='Entrada')
+    periodo = models.CharField(max_length=15, choices=CHOICE_PERIODOS, default='Entrada')
     horario_fim = models.TimeField()
 
     class Meta:

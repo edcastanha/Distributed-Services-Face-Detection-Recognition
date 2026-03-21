@@ -51,3 +51,5 @@ nav:
     - 'API Django': 'reference/django_api.md'
     - 'API Flask (Faces)': 'reference/flask_api.md'
     - 'Celery Workers': 'reference/celery_workers.md'
+  - 'Decisões de Arquitetura (ADR)':
+    - 'ADR-001 – Modelos de Dados': 'adr/001-modelos-entidades.md'
