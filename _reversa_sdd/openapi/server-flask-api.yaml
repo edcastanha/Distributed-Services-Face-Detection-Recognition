@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: SecEdu Face Processing API
+  version: 1.0.0
+  description: "API de processamento neural para Faces usando DeepFace e Mediapipe."
+paths:
+  /analyze:
+    post:
+      summary: Analisar Demografias e Emoções
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - img_path
+              properties:
+                img_path:
+                  type: string
+                  example: "/ftp/camera01/2026-05-01/foto.jpg"
+                detector_backend:
+                  type: string
+                  default: "opencv"
+                actions:
+                  type: array
+                  items:
+                    type: string
+                  default: ["age", "gender", "emotion", "race"]
+                enforce_detection:
+                  type: boolean
+                  default: true
+      responses:
+        "200":
+          description: Resultado com Demografias
+        "400":
+          description: Erro de Entrada
+
+  /verify:
+    post:
+      summary: Verificação Facial entre 2 Imagens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - img1_path
+                - img2_path
+              properties:
+                img1_path:
+                  type: string
+                img2_path:
+                  type: string
+      responses:
+        "200":
+          description: Distância e Verificação Booleana
+
+  /embedding:
+    post:
+      summary: Geração do Vetor Facial
+      description: Extrai vetor matemático usando corte facial via MediaPipe.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - img
+              properties:
+                img:
+                  type: string
+      responses:
+        "200":
+          description: JSON com embeddings
