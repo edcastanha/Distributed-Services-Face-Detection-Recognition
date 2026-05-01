@@ -1,61 +1,93 @@
 import os
 import re
-import json
+import time
+import logging
 from datetime import datetime
-import pika
-
-from loggingMe import logger
 from publicar import Publisher
 
-QUEUE_PUBLISHIR = 'ftp'
-EXCHANGE = 'secedu'
-ROUTE_KEY = 'path'
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-FTP_PATH = 'ftp'
+# Diretório raiz para monitoramento FTP
+FTP_PATH = os.environ.get("FTP_PATH", "/ftp")
 
-# Expressão regular para o padrão AAAA-MM-DD
-date_pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
+# Regex para a estrutura de pastas YYYY-MM-DD
+DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
-def start_producer_path():
-    processed_dates = set()  # Para armazenar as datas já processadas
-    logger.info(f' <**_start_producer_path_**> 1 : aguardando fila ...')
+class JobFacesProducer:
+    def __init__(self):
+        self.publisher = Publisher()
+        self.processed_dates = set()
+        self.last_flush_date = datetime.now().date()
+        
+    def _flush_memory_if_needed(self):
+        """
+        Prevenção de Vazamento de Memória (OOM).
+        Faz o flush diário do HashSet para evitar crescimento indefinido.
+        """
+        current_date = datetime.now().date()
+        if current_date > self.last_flush_date:
+            logger.info("Executando flush diário da memória de processed_dates para prevenir OOM.")
+            self.processed_dates.clear()
+            self.last_flush_date = current_date
 
-    for root, dirs, files in os.walk(FTP_PATH):
-        components = root.split('/')
+    def start_producer_path(self):
+        """
+        Varre o FTP_PATH buscando frames de câmeras na estrutura YYYY-MM-DD e enfileira.
+        """
+        logger.info(f"Iniciando discover em: {FTP_PATH}")
+        
+        self._flush_memory_if_needed()
 
-        # Verificar se o path tem 4 componentes e se corresponde ao padrão AAAA-MM-DD
-        if components and len(components) == 4 and date_pattern.match(components[3]):
-            date_capture = components[3]
-
-            # Verificar se a data já foi processada
-            if date_capture not in processed_dates:
-                logger.info(f' <**_start_consumer_path_**> 2 : {date_capture}')
-                try:
-                    device_name = components[1]
-                    timestamp = datetime.now().isoformat()
-                    file_path = os.path.join(root)
-                    message_dict = {
-                        "data_captura": date_capture,
-                        "nome_equipamento": device_name,
-                        "caminho_do_arquivo": file_path,
-                        "data_processamento": timestamp,
+        for root, dirs, files in os.walk(FTP_PATH):
+            for file in files:
+                if not file.lower().endswith(('.png', '.jpg', '.jpeg')):
+                    continue
+                    
+                full_path = os.path.join(root, file)
+                
+                # Extração baseada em os.sep para identificar a câmera e a data
+                # Exemplo esperado: /ftp/camera_01/sub/2026-05-01/foto.jpg
+                path_parts = full_path.split(os.sep)
+                
+                if len(path_parts) < 4:
+                    continue
+                
+                date_folder = path_parts[-2]
+                camera_name = path_parts[-4] if len(path_parts) >= 4 else "unknown"
+                
+                if DATE_PATTERN.match(date_folder):
+                    unique_id = f"{camera_name}_{date_folder}_{file}"
+                    
+                    if unique_id in self.processed_dates:
+                        continue # Evita publicação duplicada
+                    
+                    payload = {
+                        "date_capture": date_folder,
+                        "equipamento": camera_name,
+                        "path": full_path,
+                        "timestamp": datetime.now().isoformat()
                     }
+                    
+                    # Tenta publicar. Se RabbitMQ estiver offline, o fallback ocorre no publisher,
+                    # e como retorna False, não registramos no processed_dates (para tentar de novo depois).
+                    success = self.publisher.publish(payload)
+                    
+                    if success:
+                        self.processed_dates.add(unique_id)
 
-                    message_str = json.dumps(message_dict)
-                    logger.info(f' <**_start_consumer_path_**> 3 :  {message_str}')
+def main():
+    producer = JobFacesProducer()
+    while True:
+        try:
+            producer.start_producer_path()
+            time.sleep(10) # Polling interval de 10s
+        except KeyboardInterrupt:
+            logger.info("Processo interrompido pelo usuário.")
+            break
+        except Exception as e:
+            logger.error(f"Falha inesperada no laço principal: {e}")
+            time.sleep(10)
 
-                    publisher = Publisher()
-                    publisher.start_publisher(exchange=EXCHANGE, routing_name=ROUTE_KEY, message=message_str)
-                    publisher.close()
-
-                    # Marcar a data como processada
-                    processed_dates.add(date_capture)
-                except pika.exceptions.AMQPConnectionError as e:
-                    logger.error(f'Error in processing: {e}')
-            else:
-                logger.info(f' <**_start_consumer_path_**> 4 : {date_capture} já processada')
-                break
-
-
-if __name__ == '__main__':
-    start_producer_path()
+if __name__ == "__main__":
+    main()

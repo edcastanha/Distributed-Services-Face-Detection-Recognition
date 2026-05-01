@@ -39,7 +39,7 @@ Nenhum gap crítico identificado. Pode iniciar com segurança.
 ---
 
 ### Tarefa 04 — Fluxo FTP Producer (Jobs Faces)
-**Status:** pending
+**Status:** done
 **Lê:** `_reversa_sdd/sdd/server-jobs-faces.md`, `_reversa_sdd/dependencies.md`, `_reversa_sdd/user-stories/fluxo-captura-face.md`
 **Constrói:** `server-jobs-faces/codes_models/main.py`, `server-jobs-faces/publicar.py`
 **Pronto quando:** Dado um diretório 'ftp/camera_01/sub/2026-05-01/foto.jpg', Quando o 'start_producer_path' for executado, Então a foto deve ser mapeada, encapsulada em JSON e despachada para a exchange 'secedu'.
