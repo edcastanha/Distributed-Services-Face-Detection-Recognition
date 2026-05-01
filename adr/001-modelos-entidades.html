@@ -1,0 +1,1868 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://seu-dominio.com/adr/001-modelos-entidades.html">
+      
+      
+        <link rel="prev" href="../reference/celery_workers.html">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ADR-001 – Modelos de Dados - Documentação - PoC Detecção e Reconhecimento Facial</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-001-modelos-de-dados-entidades-do-sistema" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../index.html" title="Documentação - PoC Detecção e Reconhecimento Facial" class="md-header__button md-logo" aria-label="Documentação - PoC Detecção e Reconhecimento Facial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Documentação - PoC Detecção e Reconhecimento Facial
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-001 – Modelos de Dados
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/edcastanha/Distributed-Services-Face-Detection-Recognition" title="Ir ao repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edcastanha/Distributed-Services-Face-Detection-Recognition
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Arquitetura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../INSTALL.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Guia de Instalação
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../reference/django_api.html" class="md-tabs__link">
+          
+  
+  
+  Referência da API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="001-modelos-entidades.html" class="md-tabs__link">
+          
+  
+  
+  Decisões de Arquitetura (ADR)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Documentação - PoC Detecção e Reconhecimento Facial" class="md-nav__button md-logo" aria-label="Documentação - PoC Detecção e Reconhecimento Facial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Documentação - PoC Detecção e Reconhecimento Facial
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/edcastanha/Distributed-Services-Face-Detection-Recognition" title="Ir ao repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edcastanha/Distributed-Services-Face-Detection-Recognition
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INSTALL.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia de Instalação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referência da API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Referência da API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/django_api.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Django
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/flask_api.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Flask (Faces)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/celery_workers.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Celery Workers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões de Arquitetura (ADR)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões de Arquitetura (ADR)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-001 – Modelos de Dados
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="001-modelos-entidades.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-001 – Modelos de Dados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisão
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decisão">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modelo-base-abstrato-basemodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modelo Base Abstrato (baseModel)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-cadastros-entidades-de-cadastro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App cadastros — Entidades de Cadastro
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="App cadastros — Entidades de Cadastro">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contratos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contratos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escolas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escolas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pessoas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pessoas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turmas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turmas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aluno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aluno
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escalas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fotos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fotos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-cameras-equipamentos-e-pipeline-de-processamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App cameras — Equipamentos e Pipeline de Processamento
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="App cameras — Equipamentos e Pipeline de Processamento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#notafiscal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NotaFiscal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cameras" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cameras
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarefas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tarefas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processamentos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processamentos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frequenciasescolar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FrequenciasEscolar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-analytical-resultados-analiticos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App analytical — Resultados Analíticos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="App analytical — Resultados Analíticos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imagenstratadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ImagensTratadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facesverify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FacesVerify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facesprevisaoemocional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FacesPrevisaoEmocional
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagrama-de-relacionamentos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagrama de Relacionamentos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consequências
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequências">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positivas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Positivas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negativas-limitacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Negativas / Limitações
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="adr-001-modelos-de-dados-entidades-do-sistema">ADR-001: Modelos de Dados (Entidades) do Sistema</h1>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Aceito</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>2024-01-01</td>
+</tr>
+<tr>
+<td><strong>Autores</strong></td>
+<td>Equipe de Desenvolvimento</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="contexto">Contexto</h2>
+<p>O sistema de Detecção e Reconhecimento Facial Distribuído precisa persistir e relacionar diferentes categorias de informação para suportar seu pipeline de processamento. São eles:</p>
+<ul>
+<li>Cadastro de pessoas, escolas e contratos;</li>
+<li>Gerenciamento de câmeras e locais de monitoramento;</li>
+<li>Controle de agendamento e execução de tarefas de captura;</li>
+<li>Armazenamento do pipeline de processamento de imagens e detecção de faces;</li>
+<li>Resultados de reconhecimento facial e análise emocional;</li>
+<li>Registro de frequência escolar.</li>
+</ul>
+<p>O Django ORM foi escolhido como camada de abstração do banco de dados (PostgreSQL), e as entidades foram organizadas em três aplicações Django:</p>
+<ul>
+<li><strong><code>cadastros</code></strong> – dados de cadastro institucional e de pessoas;</li>
+<li><strong><code>cameras</code></strong> – equipamentos, locais, tarefas e pipeline de processamento;</li>
+<li><strong><code>analytical</code></strong> – resultados analíticos gerados pelo pipeline de IA.</li>
+</ul>
+<hr />
+<h2 id="decisao">Decisão</h2>
+<h3 id="modelo-base-abstrato-basemodel">Modelo Base Abstrato (<code>baseModel</code>)</h3>
+<p>Todas as entidades de domínio herdam de um modelo abstrato comum que fornece rastreabilidade temporal automática:</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_cadastro</code></td>
+<td>DateTimeField</td>
+<td>Preenchido automaticamente na criação</td>
+</tr>
+<tr>
+<td><code>data_atualizacao</code></td>
+<td>DateTimeField</td>
+<td>Atualizado automaticamente a cada edição</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="app-cadastros-entidades-de-cadastro">App <code>cadastros</code> — Entidades de Cadastro</h3>
+<h4 id="contratos"><code>Contratos</code></h4>
+<p>Representa o contrato firmado entre a instituição e o prestador do serviço.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>protocolo</code></td>
+<td>CharField(100)</td>
+<td>Identificador/número do contrato</td>
+</tr>
+<tr>
+<td><code>assinado_em</code></td>
+<td>DateTimeField</td>
+<td>Data e hora da assinatura</td>
+</tr>
+<tr>
+<td><code>responsavel</code></td>
+<td>CharField(100)</td>
+<td>Nome do responsável pelo contrato</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> nenhuma (entidade raiz de domínio institucional).</p>
+<hr />
+<h4 id="escolas"><code>Escolas</code></h4>
+<p>Representa a unidade escolar atendida pelo sistema.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nome</code></td>
+<td>CharField(100)</td>
+<td>Nome da escola</td>
+</tr>
+<tr>
+<td><code>contrato</code></td>
+<td>FK → Contratos</td>
+<td>Contrato vigente ao qual a escola pertence</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> N:1 com <code>Contratos</code>.</p>
+<hr />
+<h4 id="pessoas"><code>Pessoas</code></h4>
+<p>Cadastro central de indivíduos — estudantes, colaboradores e tutores.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nome</code></td>
+<td>CharField(100)</td>
+<td>Nome completo</td>
+</tr>
+<tr>
+<td><code>sexo</code></td>
+<td>CharField</td>
+<td><code>Masculino</code> / <code>Feminino</code> / <code>Outros</code></td>
+</tr>
+<tr>
+<td><code>perfil</code></td>
+<td>CharField</td>
+<td><code>Tutor</code> / <code>Colaborador</code> / <code>Estudante</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> referenciada por <code>Fotos</code>, <code>Aluno</code>, <code>FrequenciasEscolar</code> e <code>FacesVerify</code>.</p>
+<hr />
+<h4 id="turmas"><code>Turmas</code></h4>
+<p>Agrupa estudantes em turmas vinculadas a uma escola.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nome</code></td>
+<td>CharField(50)</td>
+<td>Nome ou código da turma</td>
+</tr>
+<tr>
+<td><code>periodo</code></td>
+<td>CharField</td>
+<td><code>Morning</code> / <code>Afternoon</code> / <code>Outros</code></td>
+</tr>
+<tr>
+<td><code>escola</code></td>
+<td>FK → Escolas</td>
+<td>Escola à qual a turma pertence</td>
+</tr>
+<tr>
+<td><code>alunos</code></td>
+<td>M2M → Pessoas</td>
+<td>Estudantes matriculados (via tabela intermediária <code>Aluno</code>)</td>
+</tr>
+<tr>
+<td><code>ensino</code></td>
+<td>CharField</td>
+<td><code>Children</code> (Infantil) / <code>Elementary School</code> (Fundamental I)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> N:1 com <code>Escolas</code>; M:N com <code>Pessoas</code> via <code>Aluno</code>.</p>
+<hr />
+<h4 id="aluno"><code>Aluno</code></h4>
+<p>Tabela intermediária do relacionamento M:N entre <code>Pessoas</code> e <code>Turmas</code>, adicionando a matrícula como atributo próprio.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pessoa</code></td>
+<td>FK → Pessoas</td>
+<td>Cadastro do estudante</td>
+</tr>
+<tr>
+<td><code>turma</code></td>
+<td>FK → Turmas</td>
+<td>Turma de matrícula</td>
+</tr>
+<tr>
+<td><code>matricula</code></td>
+<td>CharField(10)</td>
+<td>Número de matrícula</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="escalas"><code>Escalas</code></h4>
+<p>Define os blocos de horários de um turno escolar vinculados a um contrato.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>horario_inicio</code></td>
+<td>TimeField</td>
+<td>Início do período</td>
+</tr>
+<tr>
+<td><code>horario_fim</code></td>
+<td>TimeField</td>
+<td>Fim do período</td>
+</tr>
+<tr>
+<td><code>contrato</code></td>
+<td>FK → Contratos</td>
+<td>Contrato ao qual a escala pertence</td>
+</tr>
+<tr>
+<td><code>itinerario</code></td>
+<td>CharField</td>
+<td>Turno: <code>Morning</code> / <code>Afternoon</code> / <code>Night</code></td>
+</tr>
+<tr>
+<td><code>periodo</code></td>
+<td>CharField</td>
+<td>Slot: <code>Entrada</code>, <code>Período 1–9</code>, <code>Intervalo</code>, <code>Extra</code>, <code>Saida</code> (max_length=15)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> N:1 com <code>Contratos</code>; referenciada por <code>Tarefas</code>.</p>
+<hr />
+<h4 id="fotos"><code>Fotos</code></h4>
+<p>Armazena as fotos de uma <code>Pessoa</code> usadas como dataset de referência para reconhecimento facial. O limite é de <strong>10 fotos por pessoa</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pessoa</code></td>
+<td>FK → Pessoas</td>
+<td>Dono das fotos</td>
+</tr>
+<tr>
+<td><code>foto</code></td>
+<td>ImageField</td>
+<td>Arquivo de imagem, salvo em <code>dataset/&lt;pessoa_id&gt;/&lt;arquivo&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comportamentos especiais:</strong>
+- <code>pre_save</code>: ao substituir uma foto, o arquivo antigo é removido do disco e o dataset da API Flask é regenerado.
+- <code>pre_delete</code>: ao excluir o registro, o arquivo é removido do disco e o dataset é regenerado.</p>
+<hr />
+<h3 id="app-cameras-equipamentos-e-pipeline-de-processamento">App <code>cameras</code> — Equipamentos e Pipeline de Processamento</h3>
+<h4 id="notafiscal"><code>NotaFiscal</code></h4>
+<p>Nota fiscal de aquisição de câmeras.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>numero</code></td>
+<td>CharField(100)</td>
+<td>Número da nota fiscal</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>DateTimeField</td>
+<td>Data de emissão</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> referenciada por <code>Cameras</code>.</p>
+<hr />
+<h4 id="cameras"><code>Cameras</code></h4>
+<p>Representa um equipamento de câmera cadastrado no sistema.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nf</code></td>
+<td>FK → NotaFiscal</td>
+<td>Nota fiscal de aquisição</td>
+</tr>
+<tr>
+<td><code>descricao</code></td>
+<td>CharField(100)</td>
+<td>Descrição livre</td>
+</tr>
+<tr>
+<td><code>acesso</code></td>
+<td>CharField(100)</td>
+<td>URL ou endereço IP de acesso ao stream</td>
+</tr>
+<tr>
+<td><code>modelo</code></td>
+<td>CharField(50)</td>
+<td>Modelo do equipamento</td>
+</tr>
+<tr>
+<td><code>usuario</code></td>
+<td>CharField(100)</td>
+<td>Credencial de acesso — usuário</td>
+</tr>
+<tr>
+<td><code>senha</code></td>
+<td>CharField(100)</td>
+<td>Credencial de acesso — senha</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>BooleanField</td>
+<td><code>True</code> = ativa, <code>False</code> = inativa</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> N:1 com <code>NotaFiscal</code>; referenciada por <code>Locais</code>, <code>Tarefas</code>, <code>Processamentos</code> e <code>FrequenciasEscolar</code>.</p>
+<hr />
+<h4 id="locais"><code>Locais</code></h4>
+<p>Associa uma câmera a um ponto físico dentro de uma escola.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ponto</code></td>
+<td>FK → Escolas</td>
+<td>Escola onde a câmera está instalada</td>
+</tr>
+<tr>
+<td><code>camera</code></td>
+<td>FK → Cameras</td>
+<td>Câmera instalada no local</td>
+</tr>
+<tr>
+<td><code>nome</code></td>
+<td>CharField(100)</td>
+<td>Nome do ponto (ex.: "Portaria")</td>
+</tr>
+<tr>
+<td><code>descricao</code></td>
+<td>CharField(100)</td>
+<td>Descrição adicional</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="tarefas"><code>Tarefas</code></h4>
+<p>Representa uma tarefa agendada de captura — associa uma câmera a uma escala de horários.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>descricao</code></td>
+<td>CharField(100)</td>
+<td>Descrição da tarefa</td>
+</tr>
+<tr>
+<td><code>escalas</code></td>
+<td>FK → Escalas</td>
+<td>Escala de horários que dispara a tarefa</td>
+</tr>
+<tr>
+<td><code>cameras</code></td>
+<td>FK → Cameras</td>
+<td>Câmera responsável pela captura</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>CharField</td>
+<td><code>Pendente</code> / <code>Cancelado</code> / <code>Erro</code> / <code>Finalizado</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="processamentos"><code>Processamentos</code></h4>
+<p>Registro de cada lote de imagens/vídeo capturado por uma câmera em uma data e horário específicos.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>camera</code></td>
+<td>FK → Cameras</td>
+<td>Câmera origem da captura</td>
+</tr>
+<tr>
+<td><code>dia</code></td>
+<td>CharField(10)</td>
+<td>Data da captura (<code>DD/MM/YYYY</code>)</td>
+</tr>
+<tr>
+<td><code>horario</code></td>
+<td>CharField(10)</td>
+<td>Horário da captura (opcional)</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>CharField(250)</td>
+<td>Caminho único do arquivo no sistema de arquivos</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>CharField</td>
+<td><code>Criado</code> / <code>Processado</code> / <code>Error</code></td>
+</tr>
+<tr>
+<td><code>retry</code></td>
+<td>IntegerField</td>
+<td>Contador de tentativas de reprocessamento</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> N:1 com <code>Cameras</code>; referenciada por <code>Faces</code> e <code>FrequenciasEscolar</code>.</p>
+<hr />
+<h4 id="faces"><code>Faces</code></h4>
+<p>Cada registro representa uma face detectada dentro de um <code>Processamento</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>processamento</code></td>
+<td>FK → Processamentos</td>
+<td>Lote de onde a face foi extraída</td>
+</tr>
+<tr>
+<td><code>path_face</code></td>
+<td>CharField(350)</td>
+<td>Caminho único do recorte de face no disco</td>
+</tr>
+<tr>
+<td><code>backend_detector</code></td>
+<td>CharField(20)</td>
+<td>Algoritmo detector utilizado (padrão: <code>retinaface</code>)</td>
+</tr>
+<tr>
+<td><code>auditado</code></td>
+<td>BooleanField</td>
+<td>Indica se a face foi revisada manualmente</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>CharField</td>
+<td><code>Criado</code> / <code>Processado</code> / <code>Error</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relações:</strong> N:1 com <code>Processamentos</code>; referenciada por <code>ImagensTratadas</code> e <code>FacesVerify</code>.</p>
+<hr />
+<h4 id="frequenciasescolar"><code>FrequenciasEscolar</code></h4>
+<p>Registra a presença de uma pessoa detectada pelo sistema de reconhecimento facial.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pessoa</code></td>
+<td>FK → Pessoas</td>
+<td>Pessoa identificada</td>
+</tr>
+<tr>
+<td><code>camera</code></td>
+<td>FK → Cameras</td>
+<td>Câmera que registrou a presença</td>
+</tr>
+<tr>
+<td><code>file_dataset</code></td>
+<td>CharField(500)</td>
+<td>Caminho do arquivo de referência no dataset</td>
+</tr>
+<tr>
+<td><code>caminho_do_face</code></td>
+<td>CharField(500)</td>
+<td>Caminho do recorte de face que gerou o registro</td>
+</tr>
+<tr>
+<td><code>processo</code></td>
+<td>FK → Processamentos</td>
+<td>Lote de processamento associado</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>DateField</td>
+<td>Data do registro de frequência</td>
+</tr>
+<tr>
+<td><code>horario</code></td>
+<td>TimeField</td>
+<td>Horário do registro de frequência</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="app-analytical-resultados-analiticos">App <code>analytical</code> — Resultados Analíticos</h3>
+<h4 id="imagenstratadas"><code>ImagensTratadas</code></h4>
+<p>Controla o estado de pré-processamento (tratamento) de uma face detectada.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>face</code></td>
+<td>FK → Faces</td>
+<td>Face detectada a ser tratada</td>
+</tr>
+<tr>
+<td><code>auditado</code></td>
+<td>BooleanField</td>
+<td>Se foi revisada manualmente</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>BooleanField</td>
+<td><code>True</code> = tratamento concluído</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="facesverify"><code>FacesVerify</code></h4>
+<p>Armazena o resultado da comparação entre uma face detectada e o dataset de referência.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>face</code></td>
+<td>FK → Faces</td>
+<td>Face detectada submetida à verificação</td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td>BooleanField</td>
+<td><code>True</code> = face reconhecida com sucesso</td>
+</tr>
+<tr>
+<td><code>distance</code></td>
+<td>FloatField</td>
+<td>Distância de similaridade entre os embeddings (quanto menor, mais similar)</td>
+</tr>
+<tr>
+<td><code>auditado</code></td>
+<td>BooleanField</td>
+<td>Se o resultado foi auditado manualmente</td>
+</tr>
+<tr>
+<td><code>pessoa</code></td>
+<td>FK → Pessoas</td>
+<td>Pessoa identificada (nulo se não identificada)</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>CharField</td>
+<td><code>0</code> = Analisada / <code>1</code> = Auditada / <code>2</code> = Rejeitada</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="facesprevisaoemocional"><code>FacesPrevisaoEmocional</code></h4>
+<p>Armazena os resultados da análise emocional realizada sobre uma face.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auditado</code></td>
+<td>BooleanField</td>
+<td>Se foi revisada manualmente</td>
+</tr>
+<tr>
+<td><code>predominante</code></td>
+<td>CharField</td>
+<td>Emoção predominante detectada: <code>angry</code>, <code>disgust</code>, <code>fear</code>, <code>happy</code>, <code>neutral</code>, <code>sad</code>, <code>surprise</code></td>
+</tr>
+<tr>
+<td><code>zangado</code></td>
+<td>FloatField</td>
+<td>Probabilidade de raiva (angry)</td>
+</tr>
+<tr>
+<td><code>repulsa</code></td>
+<td>FloatField</td>
+<td>Probabilidade de repulsa (disgust)</td>
+</tr>
+<tr>
+<td><code>medo</code></td>
+<td>FloatField</td>
+<td>Probabilidade de medo (fear)</td>
+</tr>
+<tr>
+<td><code>feliz</code></td>
+<td>FloatField</td>
+<td>Probabilidade de felicidade (happy)</td>
+</tr>
+<tr>
+<td><code>neutro</code></td>
+<td>FloatField</td>
+<td>Probabilidade de neutralidade (neutral)</td>
+</tr>
+<tr>
+<td><code>triste</code></td>
+<td>FloatField</td>
+<td>Probabilidade de tristeza (sad)</td>
+</tr>
+<tr>
+<td><code>surpresa</code></td>
+<td>FloatField</td>
+<td>Probabilidade de surpresa (surprise)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="diagrama-de-relacionamentos">Diagrama de Relacionamentos</h2>
+<pre><code>Contratos ──&lt; Escolas ──&lt; Locais &gt;── Cameras ──&lt; NotaFiscal
+    │                                    │
+    └──&lt; Escalas ──&lt; Tarefas &gt;───────────┘
+                                         │
+                                    Processamentos ──&lt; Faces
+                                         │                │
+Pessoas ──&lt; Fotos             FrequenciasEscolar    ImagensTratadas
+    │                                               FacesVerify &gt;── Pessoas
+    └──&lt; Aluno &gt;── Turmas &gt;── Escolas               FacesPrevisaoEmocional
+</code></pre>
+<hr />
+<h2 id="consequencias">Consequências</h2>
+<h3 id="positivas">Positivas</h3>
+<ul>
+<li><strong>Separação de responsabilidades</strong>: a divisão em três apps (<code>cadastros</code>, <code>cameras</code>, <code>analytical</code>) reflete o fluxo de dados do sistema — cadastro → captura → análise — e facilita a manutenção independente de cada domínio.</li>
+<li><strong>Rastreabilidade</strong>: o <code>baseModel</code> abstrato garante que toda entidade registre automaticamente quando foi criada e atualizada, sem repetição de código.</li>
+<li><strong>Controle de limites</strong>: a validação de limite de 10 fotos por pessoa na entidade <code>Fotos</code> centraliza a regra de negócio na camada de modelo.</li>
+<li><strong>Auditabilidade</strong>: os campos <code>auditado</code> em <code>Faces</code>, <code>FacesVerify</code> e <code>FacesPrevisaoEmocional</code> permitem um fluxo de revisão humana sobre os resultados da IA.</li>
+<li><strong>Reprocessamento resiliente</strong>: o campo <code>retry</code> em <code>Processamentos</code> permite controlar tentativas de reprocessamento sem perda de rastreabilidade.</li>
+</ul>
+<h3 id="negativas-limitacoes">Negativas / Limitações</h3>
+<ul>
+<li><strong>Credenciais em texto simples</strong>: o modelo <code>Cameras</code> armazena <code>usuario</code> e <code>senha</code> em campos <code>CharField</code> sem criptografia. É necessário aplicar criptografia em nível de aplicação ou usar um gerenciador de segredos.</li>
+<li><strong>Caminhos de arquivo como string</strong>: <code>Processamentos.path</code> e <code>Faces.path_face</code> armazenam caminhos no sistema de arquivos como strings. Isso acopla o banco de dados à estrutura de diretórios do servidor e pode causar problemas em deploys distribuídos ou em nuvem.</li>
+<li><strong>Ausência de FK entre <code>FacesPrevisaoEmocional</code> e <code>Faces</code></strong>: a entidade <code>FacesPrevisaoEmocional</code> não possui uma chave estrangeira explícita para <code>Faces</code>, dificultando a rastreabilidade da análise emocional até a face de origem.</li>
+<li><strong>Campo <code>periodo</code> com limite de tamanho ampliado em <code>Escalas</code></strong>: <code>periodo</code> foi originalmente definido como <code>CharField(max_length=10)</code>. O valor <code>'Período 9'</code> tem 9 caracteres e caberia no limite original, mas valores como <code>'Período 10'</code> (11 caracteres) excederiam o limite caso o domínio evolua para dois dígitos. O campo foi atualizado para <code>max_length=15</code> para acomodar essa expansão com margem.</li>
+<li><strong><code>baseModel</code> duplicado</strong>: cada app define seu próprio <code>baseModel</code> abstrato. Seria mais consistente centralizar essa classe em um módulo compartilhado (ex.: <code>core/base/models.py</code>).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar ao topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
